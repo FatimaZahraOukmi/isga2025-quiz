@@ -1,0 +1,29 @@
+<div class="quiz-container">
+  <h1 class="quiz-title">{{ data.name }}</h1>
+  <p class="quiz-desc">{{ data.description }}</p>
+
+  @for (qt of data.questions; track qt.id; let qi = $index) { @if (qi === page) {
+
+  <div class="question-card">
+    <h6 class="question">{{ qi + 1 }} / {{ data.questions.length }} — {{ qt.name }}</h6>
+
+    <div class="options">
+      @for (op of qt.options; track op.id) {
+      <label class="option">
+        <input type="radio" name="q{{ qi }}" />
+        {{ op.name }}
+      </label>
+      }
+    </div>
+
+    <div class="actions">
+      @if (page > 0) {
+      <button (click)="back()" class="btn back">Back</button>
+      } @if (page < data.questions.length - 1) {
+      <button (click)="next()" class="btn next">Next</button>
+      }
+    </div>
+  </div>
+
+  } }
+</div>

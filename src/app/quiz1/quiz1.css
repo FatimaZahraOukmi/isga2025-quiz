@@ -1,0 +1,66 @@
+/* Buttons container */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+/* Base button */
+.btn {
+  min-width: 130px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+
+  /* Font */
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  /* Animation */
+  transition: all 0.3s ease;
+}
+
+/* Back button */
+.btn.back {
+  background: linear-gradient(135deg, #90a4ae, #cfd8dc);
+  color: #263238;
+  box-shadow: 0 6px 15px rgba(96, 125, 139, 0.4);
+}
+
+.btn.back:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(96, 125, 139, 0.6);
+}
+
+/* Next button */
+.btn.next {
+  background: linear-gradient(135deg, #7b1fa2, #e040fb);
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(224, 64, 251, 0.5);
+}
+
+.btn.next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(224, 64, 251, 0.7);
+}
+
+/* Active click */
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Disabled (future use) */
+.btn:disabled {
+  background: #ccc;
+  color: #777;
+  cursor: not-allowed;
+  box-shadow: none;
+}

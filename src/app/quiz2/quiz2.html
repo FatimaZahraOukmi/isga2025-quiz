@@ -1,0 +1,135 @@
+<div class="container mt-4">
+  <h2>{{ data.name }}</h2>
+  <p class="text-muted">{{ data.description }}</p>
+
+  <div class="btn-group mb-3">
+    <button class="btn btn-outline-primary" (click)="mode = 'quiz'">Quiz</button>
+    <button class="btn btn-outline-secondary" (click)="mode = 'review'">Review</button>
+    <button class="btn btn-outline-success" (click)="mode = 'submit'">Submit</button>
+  </div>
+
+  <br />
+  <br />
+  @if (mode === 'quiz') { @for (q of data2.questions; track q.id; let qi = $index) { @if (qi ===
+  page) {
+
+  <!-- Progress Bar -->
+  <div class="mb-3">
+    <div class="progress">
+      <div
+        class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        [style.width.%]="progress"
+        [attr.aria-valuenow]="progress"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        {{ progress }}%
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Question {{ qi + 1 }} / {{ data.questions.length }}</h5>
+
+      <p class="fw-bold">{{ q.name }}</p>
+
+      @for (o of q.options; track o.id) {
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [checked]="answers[qi]?.includes(o.id)"
+          (change)="toggleAnswer(qi, o.id, $event)"
+        />
+
+        <label class="form-check-label">
+          {{ o.name }}
+        </label>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="page === 0">
+        <a class="page-link" (click)="prev()">Précédent</a>
+      </li>
+
+      <li class="page-item disabled">
+        <span class="page-link"> {{ qi + 1 }} / {{ data.questions.length }} </span>
+      </li>
+
+      <li class="page-item" [class.disabled]="!answers[qi] || answers[qi].length === 0">
+        <a class="page-link" (click)="next()">Suivant</a>
+      </li>
+    </ul>
+  </nav>
+  } } } @if (mode === 'review') { @for (q of data.questions; track q.id; let qi = $index) {
+
+  <div
+    class="alert"
+    [class.alert-danger]="!answers[qi] || answers[qi].length === 0"
+    [class.alert-secondary]="answers[qi] && answers[qi].length > 0"
+  >
+    <strong>{{ qi + 1 }}. {{ q.name }}</strong>
+
+    @if (answers[qi] && answers[qi].length > 0) {
+    <ul class="mt-2 mb-0">
+      @for (o of q.options; track o.id) { @if (answers[qi].includes(o.id)) {
+      <li>
+        {{ o.name }}
+      </li>
+      } }
+    </ul>
+    } @if (!answers[qi] || answers[qi].length === 0) {
+    <div class="fst-italic mt-2">Aucune réponse sélectionnée</div>
+    }
+  </div>
+
+  } } @if (mode === 'submit') { @for (q of data.questions; track q.id; let qi = $index) {
+
+  <div
+    class="card mb-3"
+    [class.border-success]="isQuestionCorrect(qi)"
+    [class.border-danger]="!isQuestionCorrect(qi)"
+  >
+    <div class="card-body">
+      <h5>
+        {{ qi + 1 }}. {{ q.name }}
+        <span
+          class="badge ms-2"
+          [class.bg-success]="isQuestionCorrect(qi)"
+          [class.bg-danger]="!isQuestionCorrect(qi)"
+        >
+          {{ isQuestionCorrect(qi) ? 'Réponse correcte' : 'Réponse incorrecte' }}
+        </span>
+      </h5>
+
+      <!-- OPTIONS -->
+      @for (o of q.options; track o.id) {
+      <div class="form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          disabled
+          [checked]="answers[qi]?.includes(o.id)"
+        />
+
+        <label
+          class="form-check-label"
+          [class.text-success]="o.isAnswer"
+          [class.text-danger]="answers[qi]?.includes(o.id) && !o.isAnswer"
+        >
+          {{ o.name }}
+        </label>
+      </div>
+      }
+    </div>
+  </div>
+
+  } }
+</div>
